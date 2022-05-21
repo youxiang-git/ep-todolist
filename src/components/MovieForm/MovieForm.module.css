@@ -1,0 +1,5 @@
+/* Set the width to the full container and center the content */
+ion-select {
+    width: 100%;
+    justify-content: center;
+}

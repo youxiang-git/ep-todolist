@@ -1,42 +1,43 @@
-import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
+import React from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
+import { IonApp } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import Home from './pages/Home';
+import StoreProvider, { useStores } from '../src/stores/StoreProvider';
 
-/* Core CSS required for Ionic components to work properly */
-import '@ionic/react/css/core.css';
-
-/* Basic CSS for apps built with Ionic */
-import '@ionic/react/css/normalize.css';
-import '@ionic/react/css/structure.css';
-import '@ionic/react/css/typography.css';
-
-/* Optional CSS utils that can be commented out */
-import '@ionic/react/css/padding.css';
-import '@ionic/react/css/float-elements.css';
-import '@ionic/react/css/text-alignment.css';
-import '@ionic/react/css/text-transformation.css';
-import '@ionic/react/css/flex-utils.css';
-import '@ionic/react/css/display.css';
-
-/* Theme variables */
-import './theme/variables.css';
-
-setupIonicReact();
+import LoginPage from './pages/LoginPage';
+import AppTabs from './pages/AppTabs';
+import UserChangePasswordForm from './components/common/UserChangePasswordForm';
+import NotFoundPage from './pages/NotFound';
 
 const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonRouterOutlet>
-        <Route exact path="/home">
-          <Home />
-        </Route>
-        <Route exact path="/">
-          <Redirect to="/home" />
-        </Route>
-      </IonRouterOutlet>
-    </IonReactRouter>
-  </IonApp>
+    <IonApp>
+        <StoreProvider>
+            <IonReactRouter>
+                <Switch>
+                    <Route path="/login">
+                        <LoginPage />
+                    </Route>
+                    <Route path="/movie">
+                        <AppTabs
+                        // userProfileStore={userProfileStore}
+                        // routeToLogin={() => navigate('/login', 'back')}
+                        // routeToChangePassword={() => navigate('/password')}
+                        />
+                    </Route>
+                    <Route exact path="/password">
+                        <UserChangePasswordForm
+                        // userProfileStore={userProfileStore}
+                        // routeToLogin={() => navigate('/login', 'back')}
+                        />
+                    </Route>
+                    <Redirect exact path="/" to="/login" />
+                    <Route>
+                        <NotFoundPage />
+                    </Route>
+                </Switch>
+            </IonReactRouter>
+        </StoreProvider>
+    </IonApp>
 );
 
 export default App;

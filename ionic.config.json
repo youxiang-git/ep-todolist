@@ -1,7 +1,7 @@
 {
-  "name": "movie-gallery-boiler",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "react"
+    "name": "movie-gallery-boiler",
+    "integrations": {
+        "capacitor": {}
+    },
+    "type": "react"
 }
