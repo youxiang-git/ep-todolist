@@ -1,6 +1,5 @@
 import { observable, action, makeObservable } from 'mobx';
-import { makePersistable, stopPersisting } from 'mobx-persist-store';
-import localForage from 'localforage';
+import { makePersistable, clearPersistedStore } from 'mobx-persist-store';
 
 export type AuthStatus = 'checking' | 'true' | 'false' | 'forceChangePassword';
 
@@ -18,7 +17,8 @@ class UserProfileStore {
 
     constructor() {
         makeObservable(this, {
-            authStatus: observable, // persisted in localForage
+            authStatus: observable, // persisted
+            userProfile: observable, // persisted
             setAuthStatus: action,
             setUserProfile: action,
             signin: action,
@@ -28,11 +28,11 @@ class UserProfileStore {
         makePersistable(this, {
             name: 'UserProfileStore',
             properties: ['authStatus', 'userProfile'],
-            storage: localForage, // localForage, window.localStorage, AsyncStorage all have the same interface
+            storage: window.sessionStorage, // localForage, window.localStorage, AsyncStorage all have the same interface
             expireIn: 3600000, // One hour in millsesconds
             removeOnExpiration: true,
-            stringify: false,
-            debugMode: false,
+            stringify: true,
+            debugMode: true,
         });
     }
 
@@ -48,9 +48,9 @@ class UserProfileStore {
         this.authStatus = 'true';
     }
 
-    logout() {
+    async logout() {
         this.authStatus = 'false';
-        setTimeout(() => stopPersisting(this), 1000);
+        await clearPersistedStore(this);
     }
 }
 

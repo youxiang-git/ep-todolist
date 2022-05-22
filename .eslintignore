@@ -1,2 +1,2 @@
-public
-src/artifacts/*
+public/
+node_modules/

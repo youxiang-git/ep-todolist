@@ -1,7 +1,6 @@
-import * as React from 'react';
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import UserChangePasswordForm from './UserChangePasswordForm';
-import StoreProvider from '../../stores/StoreProvider';
+import StoreProvider from '../../../stores/StoreProvider';
 import {
     ionFireEvent as fireEvent,
     waitForIonicReact,
@@ -39,23 +38,35 @@ describe('<UserChangePasswordForm />', () => {
         fireEvent.ionChange(input, 'password');
         // Uncomment below to view component
         // expect(input).toBe('password');
-        expect(input).toHaveAttribute('value', 'password');
+        await waitFor(() => {
+            expect(input).toHaveAttribute('value', 'password');
+        });
+
         fireEvent.ionChange(input2, 'password2');
-        expect(input2).toHaveAttribute('value', 'password2');
+        await waitFor(() => {
+            expect(input2).toHaveAttribute('value', 'password2');
+        });
     });
 
     it("should check new and confirm passwords don't match on submit", async () => {
-        const { input, utils } = await setup('new-password-input');
-        console.log = jest.fn();
-
-        fireEvent.ionChange(input, 'password1');
-
-        fireEvent.ionChange(
-            await utils.getByTestId('confirm-password-input'),
-            'password2'
+        const { input, utils } = await setup('current-password-input');
+        const newPassword = await utils.findByTestId('new-password-input');
+        const confirmPassword = await utils.findByTestId(
+            'confirm-password-input'
+        );
+        const submitBtn = await utils.findByTestId(
+            'update-password-submit-button'
         );
 
-        fireEvent.click(utils.getByTestId('update-password-submit-button')); // click on submit
+        console.log = jest.fn();
+
+        fireEvent.ionChange(input, 'password');
+
+        fireEvent.ionChange(newPassword, 'password1');
+
+        fireEvent.ionChange(confirmPassword, 'password2');
+
+        fireEvent.click(submitBtn); // click on submit
 
         // the test library is unable to get the rendered overlay like alert
         // as a workaround, we'll test on the console.log output instead

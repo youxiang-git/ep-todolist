@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import UserProfileStore from '../UserProfileStore';
 import TestComp from './TestComp';
 import { render } from '@testing-library/react';

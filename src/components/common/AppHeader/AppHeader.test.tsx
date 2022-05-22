@@ -1,4 +1,3 @@
-import * as React from 'react';
 import AppHeader from './AppHeader';
 import { render } from '@testing-library/react';
 import StoreProvider from '../../../stores/StoreProvider';

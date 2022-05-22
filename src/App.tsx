@@ -1,14 +1,14 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { IonApp, NavContext } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import StoreProvider, { useStores } from '../src/stores/StoreProvider';
-
 import LoginPage from './pages/LoginPage';
 import AppTabs from './pages/AppTabs';
-import UserChangePasswordForm from './components/common/UserChangePasswordForm';
 import NotFoundPage from './pages/NotFound';
 import withCheckLogin from './auth/components';
+import LoadingComponent from './components/common/LoadingComponent';
+import UserChangePasswordForm from './components/common/UserChangePasswordForm';
 
 const AppRouter: React.FC = () => {
     const { userProfileStore } = useStores();
@@ -17,6 +17,13 @@ const AppRouter: React.FC = () => {
     const UserChangePasswordFormWithLogin = withCheckLogin(
         UserChangePasswordForm
     );
+
+    useEffect(() => {
+        if (userProfileStore.authStatus == 'checking') {
+            // below is to simulate the time needed to check current auth status
+            setTimeout(() => userProfileStore.setAuthStatus('false'), 2000);
+        }
+    }, []);
 
     return (
         <IonReactRouter>
@@ -29,12 +36,14 @@ const AppRouter: React.FC = () => {
                         userProfileStore={userProfileStore}
                         routeToLogin={() => navigate('/login', 'back')}
                         routeToChangePassword={() => navigate('/password')}
+                        LoadingComponent={LoadingComponent}
                     />
                 </Route>
                 <Route exact path="/password">
                     <UserChangePasswordFormWithLogin
                         userProfileStore={userProfileStore}
                         routeToLogin={() => navigate('/login', 'back')}
+                        LoadingComponent={LoadingComponent}
                     />
                 </Route>
                 <Redirect exact path="/" to="/movie/catalog" />

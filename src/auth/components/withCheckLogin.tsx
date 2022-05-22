@@ -7,7 +7,7 @@ export interface withCheckLoginProps {
     userProfileStore: UserProfileStore;
     routeToLogin?: () => void; // route to login page
     routeToChangePassword?: () => void; // route to change password
-    AwaitingComponent?: React.FC | React.ComponentClass; // render awaiting e.g. circular or spinner etc.
+    LoadingComponent?: React.FC | React.ComponentClass; // render awaiting e.g. circular or spinner etc.
 }
 
 type ActionMatrix = {
@@ -21,12 +21,12 @@ const withCheckLogin = (Component: React.FC) =>
                 userProfileStore,
                 routeToLogin,
                 routeToChangePassword,
-                AwaitingComponent,
+                LoadingComponent,
             } = this.props;
 
             const actionMatrix: ActionMatrix = {
                 checking: () =>
-                    AwaitingComponent ? <AwaitingComponent /> : null,
+                    LoadingComponent ? <LoadingComponent /> : null,
                 true: () => <Component {...this.props} />,
                 forceChangePassword: () => {
                     if (routeToChangePassword) {

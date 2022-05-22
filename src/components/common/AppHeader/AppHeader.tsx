@@ -14,7 +14,7 @@ import {
     NavContext,
 } from '@ionic/react';
 import { personCircle, constructOutline, exitOutline } from 'ionicons/icons';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useStores } from '../../../stores/StoreProvider';
 
@@ -26,15 +26,31 @@ interface AppHeaderProps {
     title: string;
 }
 
+type PopoverEvent = {
+    showPopover: boolean;
+    event: any;
+};
+
 const AppHeader: React.FC<AppHeaderProps> = (props) => {
     const { navigate } = React.useContext(NavContext);
     const { title, children } = props;
     const { userProfileStore } = useStores();
-    const [popoverState, setShowPopover] = useState({
+    const [popoverState, setShowPopover] = useState<PopoverEvent>({
         showPopover: false,
         event: undefined,
     });
 
+    useEffect(() => {
+        console.log('popoverState: ', popoverState);
+    }, [popoverState]);
+
+    const routeToPassword = () => {
+        // setShowPopover({
+        //     showPopover: false,
+        //     event: popoverState.event,
+        // });
+        setTimeout(() => navigate('/password'), 1000);
+    };
     return (
         <IonApp>
             <IonHeader data-testid="component-appheader">
@@ -52,59 +68,56 @@ const AppHeader: React.FC<AppHeaderProps> = (props) => {
                                 md={personCircle}
                             />
                         </IonButton>
-                        <IonPopover
-                            event={popoverState.event}
-                            isOpen={popoverState.showPopover}
-                            onDidDismiss={() =>
-                                setShowPopover({
-                                    showPopover: false,
-                                    event: undefined,
-                                })
-                            }
-                        >
-                            <IonList>
-                                <IonListHeader>
-                                    <IonLabel style={{ fontWeight: 'bold' }}>
-                                        Hello{' '}
-                                        {
-                                            // userProfileStore.getUserProfile
-                                            //     .username
+                        {popoverState.showPopover && (
+                            <IonPopover
+                                event={popoverState.event}
+                                isOpen={popoverState.showPopover}
+                                onDidDismiss={() =>
+                                    setShowPopover({
+                                        showPopover: false,
+                                        event: undefined,
+                                    })
+                                }
+                            >
+                                <IonList>
+                                    <IonListHeader>
+                                        <IonLabel
+                                            style={{ fontWeight: 'bold' }}
+                                        >
+                                            Hello{' '}
+                                            {
+                                                userProfileStore.userProfile
+                                                    .username
+                                            }
+                                        </IonLabel>
+                                    </IonListHeader>
+                                    <IonItem
+                                        button={true}
+                                        detail={false}
+                                        onClick={routeToPassword}
+                                    >
+                                        <MenuIcon
+                                            ios={constructOutline}
+                                            md={constructOutline}
+                                        />
+                                        <IonLabel> Manage Account </IonLabel>
+                                    </IonItem>
+                                    <IonItem
+                                        button={true}
+                                        detail={false}
+                                        onClick={async () =>
+                                            await userProfileStore.logout()
                                         }
-                                    </IonLabel>
-                                </IonListHeader>
-                                <IonItem
-                                    button={true}
-                                    detail={false}
-                                    onClick={() => {
-                                        console.log('/password');
-                                        setShowPopover({
-                                            showPopover: false,
-                                            event: undefined,
-                                        });
-                                        navigate('/password');
-                                    }}
-                                >
-                                    <MenuIcon
-                                        ios={constructOutline}
-                                        md={constructOutline}
-                                    />
-                                    <IonLabel> Manage Account </IonLabel>
-                                </IonItem>
-                                <IonItem
-                                    button={true}
-                                    detail={false}
-                                    onClick={async () =>
-                                        await userProfileStore.logout()
-                                    }
-                                >
-                                    <MenuIcon
-                                        ios={exitOutline}
-                                        md={exitOutline}
-                                    />
-                                    <IonLabel> Logout </IonLabel>
-                                </IonItem>
-                            </IonList>
-                        </IonPopover>
+                                    >
+                                        <MenuIcon
+                                            ios={exitOutline}
+                                            md={exitOutline}
+                                        />
+                                        <IonLabel> Logout </IonLabel>
+                                    </IonItem>
+                                </IonList>
+                            </IonPopover>
+                        )}
                     </IonButtons>
                     <IonTitle> {title} </IonTitle>
                 </IonToolbar>

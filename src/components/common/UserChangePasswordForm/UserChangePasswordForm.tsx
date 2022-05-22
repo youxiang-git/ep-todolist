@@ -1,6 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import PasswordStrengthMeter from './PasswordStrengthMeter';
-import { PASSWORD_REQUIREMENTS } from '../../settings';
+import { PASSWORD_REQUIREMENTS } from '../../../settings';
 import {
     IonAlert,
     IonApp,
@@ -20,7 +20,7 @@ import {
     NavContext,
 } from '@ionic/react';
 import { exitOutline, homeOutline, keyOutline } from 'ionicons/icons';
-import { useStores } from '../../stores/StoreProvider';
+import { useStores } from '../../../stores/StoreProvider';
 
 const UserChangePasswordForm: React.FC = () => {
     const { userProfileStore } = useStores();
@@ -37,12 +37,10 @@ const UserChangePasswordForm: React.FC = () => {
 
     const handleChangePassword = async (event: React.MouseEvent) => {
         event.preventDefault();
-        // const { username, passwordStrength } = userProfileStore.getUserProfile;
 
-        if (
-            // userProfileStore.isAuthenticated === 'true' &&
-            currentPassword.length < PASSWORD_REQUIREMENTS.MIN_LENGTH
-        ) {
+        console.log('currentPassword ', currentPassword);
+
+        if (currentPassword.length < PASSWORD_REQUIREMENTS.MIN_LENGTH) {
             setStatusMsg(
                 `Current password length must be at least ${PASSWORD_REQUIREMENTS.MIN_LENGTH}`
             );
@@ -56,38 +54,6 @@ const UserChangePasswordForm: React.FC = () => {
             setStatusMsg('New password must not be same as current');
             return;
         }
-        // if (
-        //     passwordStrength &&
-        //     passwordStrength < PASSWORD_REQUIREMENTS.MIN_STRENGTH
-        // ) {
-        //     setStatusMsg(
-        //         'New password is weak. Set an alphanumeric passphrase (e.g. special dates) that you can remember'
-        //     );
-        //     return;
-        // }
-        // userProfileStore.setUserProfile({
-        //     username: username,
-        //     password: currentPassword,
-        //     newPassword: newPassword,
-        // });
-        // try {
-        //     const result = await changePasswordSession(userProfileStore);
-        //     setNewPassword('');
-        //     setConfirmPassword('');
-        //     setCurrentPassword('');
-        //     if (result === 'SUCCESS') {
-        //         setForceChangeMode(false);
-        //         setDisableButton(true);
-        //         setStatusMsg('Password has been changed successfully');
-        //         // redirect to home page after 3 secs
-        //         setTimeout(
-        //             () => navigate('/'), // ()=>redirect('/') for next.js
-        //             3000
-        //         );
-        //     }
-        // } catch (err) {
-        //     setStatusMsg(`${err}`);
-        // }
     };
 
     React.useEffect(() => {
@@ -169,6 +135,7 @@ const UserChangePasswordForm: React.FC = () => {
                                         Current Password
                                     </IonLabel>
                                     <IonInput
+                                        data-testid="current-password-input"
                                         required={!forceChangeMode}
                                         disabled={forceChangeMode}
                                         type="password"

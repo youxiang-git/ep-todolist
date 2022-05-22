@@ -30,16 +30,21 @@ const LoginPage: React.FC = () => {
     const [message, setMessage] = useState<string>('');
     const [authStatus, setAuthStatus] = useState<AuthStatus>('checking');
 
-    React.useEffect(
+    useEffect(
         // link mobx state to local state - authStatus
         () => autorun(() => setAuthStatus(userProfileStore.authStatus)),
         []
     );
 
-    React.useEffect(() => {
-        if (authStatus === 'true') {
-            // redirect to home page if already authenticated
-            navigate('/');
+    useEffect(() => {
+        switch (authStatus) {
+            case 'checking':
+                // placeholder to implement await auth checking
+                // userProfileStore.setAuthStatus('false');
+                break;
+            case 'true':
+                navigate('/');
+                break;
         }
     }, [authStatus]);
 
