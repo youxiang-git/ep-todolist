@@ -31,9 +31,8 @@ const UserChangePasswordForm: React.FC = () => {
     const [disableButton, setDisableButton] = React.useState<boolean>(true); // change password button
     const [statusMsg, setStatusMsg] = React.useState<string>('');
     const [alertPopup, setAlertPopup] = React.useState<boolean>(false);
-    const [forceChangeMode, setForceChangeMode] = React.useState<boolean>(
-        false
-    ); // set if force change passwd
+    const [forceChangeMode, setForceChangeMode] =
+        React.useState<boolean>(false); // set if force change passwd
 
     const handleChangePassword = async (event: React.MouseEvent) => {
         event.preventDefault();

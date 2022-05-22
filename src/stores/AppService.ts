@@ -1,4 +1,4 @@
-import { ADDRESS, MOVIE_ENDPOINT } from '../settings';
+import { MOVIE_ENDPOINT } from '../settings';
 import { Movie } from './AppStore';
 import restGet from '../lib/restGet';
 import restPost from '../lib/restPost';
@@ -18,32 +18,6 @@ declare global {
  *
  */
 class AppService {
-    async updateWalletAsset() {
-        if (
-            typeof window == 'undefined' ||
-            typeof window.ethereum == 'undefined'
-        ) {
-            return;
-        }
-        try {
-            await window.ethereum.request({
-                method: 'wallet_watchAsset',
-                params: {
-                    type: 'ERC20',
-                    options: {
-                        address: ADDRESS,
-                        symbol: 'MOV',
-                        decimals: 0,
-                        image: 'https://icons.iconarchive.com/icons/blackvariant/button-ui-system-folders-drives/256/Movies-icon.png',
-                    },
-                },
-            });
-            console.log('MOV token updated in wallet!');
-        } catch (err) {
-            console.error(err);
-        }
-    }
-
     getMovieListAsync(): Promise<Movie[]> {
         return new Promise(async (resolve, reject) => {
             try {
