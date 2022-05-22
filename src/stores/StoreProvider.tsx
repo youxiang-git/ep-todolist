@@ -1,11 +1,12 @@
 import * as React from 'react';
+import UserProfileStore from '../auth/UserProfileStore';
 import AppStore from './AppStore';
 import UiState from './UiState';
 
 export interface StoreContext {
     appStore: AppStore;
     uiState: UiState;
-    // userProfileStore: UserProfileStore;
+    userProfileStore: UserProfileStore;
 }
 
 let stores: StoreContext | null = null;
@@ -13,10 +14,10 @@ const storeContext = React.createContext<StoreContext | null>(stores);
 
 export const createStores = () => {
     const uiState = new UiState();
-    // const userProfileStore = new UserProfileStore();
+    const userProfileStore = new UserProfileStore();
     stores = {
         uiState,
-        // userProfileStore,
+        userProfileStore,
         appStore: new AppStore(uiState),
     };
 

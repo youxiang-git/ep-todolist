@@ -29,7 +29,7 @@ interface AppHeaderProps {
 const AppHeader: React.FC<AppHeaderProps> = (props) => {
     const { navigate } = React.useContext(NavContext);
     const { title, children } = props;
-    // const { userProfileStore } = useStores();
+    const { userProfileStore } = useStores();
     const [popoverState, setShowPopover] = useState({
         showPopover: false,
         event: undefined,
@@ -75,10 +75,14 @@ const AppHeader: React.FC<AppHeaderProps> = (props) => {
                                 <IonItem
                                     button={true}
                                     detail={false}
-                                    onClick={
-                                        // () => redirect('/password') for next js
-                                        () => navigate('/password')
-                                    }
+                                    onClick={() => {
+                                        console.log('/password');
+                                        setShowPopover({
+                                            showPopover: false,
+                                            event: undefined,
+                                        });
+                                        navigate('/password');
+                                    }}
                                 >
                                     <MenuIcon
                                         ios={constructOutline}
@@ -89,7 +93,9 @@ const AppHeader: React.FC<AppHeaderProps> = (props) => {
                                 <IonItem
                                     button={true}
                                     detail={false}
-                                    // onClick={() => logout(userProfileStore)}
+                                    onClick={async () =>
+                                        await userProfileStore.logout()
+                                    }
                                 >
                                     <MenuIcon
                                         ios={exitOutline}

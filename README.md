@@ -1,14 +1,8 @@
-# Movie dApp with Ionic React Framework
+# Movie App with Ionic React Framework
 
-This demo dApp is using the Ionic React Framework and MobX stores. It can also be used as a dApp boilerplate.
-
-In addition, this demo is using the latest trending dApp tools with OpenZeppelin, Hard Hat and Ethers.js
+This demo app is using the Ionic 6 React Framework and MobX stores. It can also be used as a boilerplate.
 
 ## Quick Start
-
-### Deploy Contracts
-
-Refer to README.md under `quorum` directory
 
 ### Install or upgrade Ionic CLI
 

@@ -23,7 +23,7 @@ import { exitOutline, homeOutline, keyOutline } from 'ionicons/icons';
 import { useStores } from '../../stores/StoreProvider';
 
 const UserChangePasswordForm: React.FC = () => {
-    // const { userProfileStore } = useStores();
+    const { userProfileStore } = useStores();
     const { navigate } = React.useContext(NavContext);
     const [currentPassword, setCurrentPassword] = React.useState<string>(''); //current password field
     const [newPassword, setNewPassword] = React.useState<string>(''); //new password field
@@ -31,8 +31,9 @@ const UserChangePasswordForm: React.FC = () => {
     const [disableButton, setDisableButton] = React.useState<boolean>(true); // change password button
     const [statusMsg, setStatusMsg] = React.useState<string>('');
     const [alertPopup, setAlertPopup] = React.useState<boolean>(false);
-    const [forceChangeMode, setForceChangeMode] =
-        React.useState<boolean>(false); // set if force change passwd
+    const [forceChangeMode, setForceChangeMode] = React.useState<boolean>(
+        false
+    ); // set if force change passwd
 
     const handleChangePassword = async (event: React.MouseEvent) => {
         event.preventDefault();
@@ -89,15 +90,13 @@ const UserChangePasswordForm: React.FC = () => {
         // }
     };
 
-    // React.useEffect(() => {
-    //     const { isAuthenticated } = userProfileStore;
-    //     if (isAuthenticated === 'forceChangePassword') {
-    //         const { password } = userProfileStore.getUserProfile;
-    //         setForceChangeMode(true);
-    //         setStatusMsg('You must set a new password before proceeding');
-    //         password && setCurrentPassword(password);
-    //     }
-    // }, []);
+    React.useEffect(() => {
+        const { authStatus } = userProfileStore;
+        if (authStatus === 'forceChangePassword') {
+            setForceChangeMode(true);
+            setStatusMsg('You must set a new password before proceeding');
+        }
+    }, []);
 
     React.useEffect(() => {
         // display the alert pop-up

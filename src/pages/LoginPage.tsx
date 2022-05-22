@@ -17,50 +17,41 @@ import {
     IonIcon,
     IonAlert,
 } from '@ionic/react';
-// import { signin, TokensType } from '@tinnolab/aws-cognito-sso';
-// import { useStores } from '../stores/StoreProvider';
+import { useStores } from '../stores/StoreProvider';
+import { AuthStatus } from '../auth/UserProfileStore';
+import { autorun } from 'mobx';
 
 const LoginPage: React.FC = () => {
-    // const { userProfileStore } = useStores();
+    const { userProfileStore } = useStores();
     const { navigate } = useContext(NavContext);
-    const [username, setUsername] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [iserror, setIserror] = useState<boolean>(false);
     const [message, setMessage] = useState<string>('');
-    // useEffect(() => {
-    //     userProfileStore.setDomain(
-    //         typeof window !== undefined ? window.location.hostname : 'localhost' // set to development if mobile app
-    //     );
-    // }, []);
+    const [authStatus, setAuthStatus] = useState<AuthStatus>('checking');
 
-    const nextRoute = (tokenType: string) => {
-        if (tokenType === 'Bearer') return '/';
-        if (tokenType === 'NEW_PASSWORD_REQUIRED') return '/password';
-        throw new Error(`No valid token found! TokenType: ${tokenType}`);
-    };
+    React.useEffect(
+        // link mobx state to local state - authStatus
+        () => autorun(() => setAuthStatus(userProfileStore.authStatus)),
+        []
+    );
+
+    React.useEffect(() => {
+        if (authStatus === 'true') {
+            // redirect to home page if already authenticated
+            navigate('/');
+        }
+    }, [authStatus]);
 
     const handleLogin = async () => {
-        // if (!password || password.length < 6) {
-        //     setMessage('Please enter your password');
-        //     setIserror(true);
-        //     return;
-        // }
-        // try {
-        //     console.log({ username, password });
-        //     userProfileStore.setUserProfile({
-        //         username,
-        //         password,
-        //     });
-        //     const { tokenType }: TokensType = await signin(userProfileStore);
-        //     if (tokenType === undefined)
-        //         throw new Error('No valid token found!');
-        //     // redirect to intended url after login
-        //     navigate(nextRoute(tokenType)); // use redirect() for next.js
-        // } catch (err) {
-        //     setMessage(`${err}`);
-        //     setIserror(true);
-        //     console.log(err);
-        // }
+        try {
+            await userProfileStore.signin();
+            // login success
+            navigate('/');
+        } catch (err) {
+            // login failed
+            console.error(err);
+        }
     };
 
     return (
@@ -95,14 +86,11 @@ const LoginPage: React.FC = () => {
                     <IonRow>
                         <IonCol>
                             <IonItem>
-                                <IonLabel position="floating">
-                                    {' '}
-                                    Username{' '}
-                                </IonLabel>
+                                <IonLabel position="floating"> Email </IonLabel>
                                 <IonInput
-                                    value={username}
+                                    value={email}
                                     onIonChange={(e) =>
-                                        setUsername(e.detail.value!)
+                                        setEmail(e.detail.value!)
                                     }
                                 />
                             </IonItem>
