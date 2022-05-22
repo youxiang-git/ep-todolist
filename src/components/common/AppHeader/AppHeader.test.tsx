@@ -35,14 +35,16 @@ describe('<AppHeader />', () => {
         expect(utils.getByText('title one')).toBeTruthy();
     });
 
-    // it('should render child correctly', () => {
-    //     const Child: React.FC = () => <div> test child </div>;
-    //     const { getByText } = render(
-    //         <AppHeader title="title one">
-    //             {' '}
-    //             <Child />{' '}
-    //         </AppHeader>
-    //     );
-    //     expect(getByText('test child')).toBeTruthy();
-    // });
+    it('should render child correctly', () => {
+        const Child: React.FC = () => <div> test child </div>;
+        const { getByText } = render(
+            <StoreProvider>
+                <AppHeader title="title one">
+                    {' '}
+                    <Child />{' '}
+                </AppHeader>
+            </StoreProvider>
+        );
+        expect(getByText('test child')).toBeTruthy();
+    });
 });

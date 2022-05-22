@@ -20,6 +20,22 @@ This demo app is using the Ionic 6 React Framework and MobX stores. It can also 
 1. Test
     - npm test
 
+## Project Structure
+
+```
+<rootDir>
+    |__src
+        |__index.tsx (ReactDOM)
+        |__App.tsx (main app where routes are defined)
+        |__theme (theme colors are defined here)
+        |__pages (main pages for the routes)
+        |__stores (Mobx data stores)
+        |__auth (authentication module)
+        |__components
+            |__common (common components e.g. AppHeader etc)
+            |__ (other components)
+```
+
 ## Styling Ionic Components with CSS
 
 There are 2 ways with the styled components.

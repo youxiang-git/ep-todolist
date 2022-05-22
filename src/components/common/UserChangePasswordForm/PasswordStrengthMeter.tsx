@@ -31,7 +31,6 @@ const getPasswordAttrs = (score: number) => {
 
 export type PasswordStrengthMeterType = {
     password: string;
-    // userProfileStore: UserProfileStore;
 };
 
 const PasswordStrengthBar = styled(IonProgressBar)`
@@ -40,14 +39,9 @@ const PasswordStrengthBar = styled(IonProgressBar)`
 
 const PasswordStrengthMeter: React.FC<PasswordStrengthMeterType> = (props) => {
     const { password } = props;
-    // const { username } = userProfileStore.getUserProfile;
     const { score } = zxcvbn(password); // score: 0 - 4
     const { desc, color } = getPasswordAttrs(score);
     if (password.length === 0) return null; // don't render if password id empty
-    // userProfileStore.setUserProfile({
-    //     username: username,
-    //     passwordStrength: score,
-    // });
 
     return (
         <div data-testid="component-password-strength-bar">
