@@ -31,6 +31,7 @@ This demo app is using the Ionic 6 React Framework and MobX stores. It can also 
         |__pages (main pages for the routes)
         |__stores (Mobx data stores)
         |__auth (authentication module)
+            |__UserProfileStore (mobx store to track user auth)
         |__components
             |__common (common components e.g. AppHeader etc)
             |__ (other components)

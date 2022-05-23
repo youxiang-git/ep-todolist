@@ -32,7 +32,7 @@ class UserProfileStore {
             expireIn: 3600000, // One hour in millsesconds
             removeOnExpiration: true,
             stringify: true,
-            debugMode: true,
+            debugMode: false,
         });
     }
 
@@ -45,10 +45,12 @@ class UserProfileStore {
     }
 
     signin() {
+        // hard code for now
         this.authStatus = 'true';
     }
 
     async logout() {
+        // hard code for now
         this.authStatus = 'false';
         await clearPersistedStore(this);
     }

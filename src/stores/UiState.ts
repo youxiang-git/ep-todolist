@@ -4,14 +4,9 @@ import { observable, action, makeObservable } from 'mobx';
  * MobX store to manage UI states among components
  */
 
-interface UiState {
-    promptToAddHomeScreen: boolean; // whether the app has prompted user to add home screen
-    error: string;
-}
-
 class UiState {
-    promptToAddHomeScreen = false;
-    error = '';
+    promptToAddHomeScreen: boolean = false;
+    error: string = '';
 
     constructor() {
         makeObservable(this, {

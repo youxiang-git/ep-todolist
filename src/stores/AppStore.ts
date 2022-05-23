@@ -20,13 +20,9 @@ type MovieRental = {
     tokenId: number;
 };
 
-interface AppStore {
+class AppStore {
     appService: AppService;
     uiState: UiState;
-}
-
-class AppStore {
-    appService = new AppService();
     rentalList: MovieRental[] = [];
     movieList: Movie[] = [];
     spliceMovieList = [];
@@ -38,6 +34,7 @@ class AppStore {
             spliceMovieList: observable,
             updateMovieStatus: action,
         });
+        this.appService = new AppService();
         this.uiState = uiState;
     }
 

@@ -8,6 +8,7 @@ import {
 } from '@ionic/react';
 import React, { useContext, useEffect, useState } from 'react';
 import { IonGrid, IonRow, IonCol } from '@ionic/react';
+import styled from 'styled-components';
 import { personCircle } from 'ionicons/icons';
 import {
     IonItem,
@@ -20,6 +21,11 @@ import {
 import { useStores } from '../stores/StoreProvider';
 import { AuthStatus } from '../auth/UserProfileStore';
 import { autorun } from 'mobx';
+
+const SmCol = styled(IonCol)`
+    max-width: 540px;
+    width: 100%;
+`;
 
 const LoginPage: React.FC = () => {
     const { userProfileStore } = useStores();
@@ -68,8 +74,8 @@ const LoginPage: React.FC = () => {
             </IonHeader>
             <IonContent fullscreen className="ion-padding ion-text-center">
                 <IonGrid>
-                    <IonRow>
-                        <IonCol>
+                    <IonRow class="ion-justify-content-center">
+                        <SmCol>
                             <IonAlert
                                 isOpen={iserror}
                                 onDidDismiss={() => setIserror(false)}
@@ -78,18 +84,18 @@ const LoginPage: React.FC = () => {
                                 message={message}
                                 buttons={['Dismiss']}
                             />
-                        </IonCol>
+                        </SmCol>
                     </IonRow>
-                    <IonRow>
-                        <IonCol>
+                    <IonRow class="ion-justify-content-center">
+                        <SmCol>
                             <IonIcon
                                 style={{ fontSize: '70px', color: '#0040ff' }}
                                 icon={personCircle}
                             />
-                        </IonCol>
+                        </SmCol>
                     </IonRow>
-                    <IonRow>
-                        <IonCol>
+                    <IonRow class="ion-justify-content-center">
+                        <SmCol>
                             <IonItem>
                                 <IonLabel position="floating"> Email </IonLabel>
                                 <IonInput
@@ -99,11 +105,11 @@ const LoginPage: React.FC = () => {
                                     }
                                 />
                             </IonItem>
-                        </IonCol>
+                        </SmCol>
                     </IonRow>
 
-                    <IonRow>
-                        <IonCol>
+                    <IonRow class="ion-justify-content-center">
+                        <SmCol>
                             <IonItem>
                                 <IonLabel position="floating">
                                     {' '}
@@ -117,14 +123,14 @@ const LoginPage: React.FC = () => {
                                     }
                                 />
                             </IonItem>
-                        </IonCol>
+                        </SmCol>
                     </IonRow>
-                    <IonRow>
-                        <IonCol>
+                    <IonRow class="ion-justify-content-center">
+                        <SmCol>
                             <IonButton expand="block" onClick={handleLogin}>
                                 Login
                             </IonButton>
-                        </IonCol>
+                        </SmCol>
                     </IonRow>
                 </IonGrid>
             </IonContent>
