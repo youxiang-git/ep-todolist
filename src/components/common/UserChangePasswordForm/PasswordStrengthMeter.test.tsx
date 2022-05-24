@@ -3,12 +3,12 @@ import { within } from '@testing-library/dom';
 import PasswordStrengthMeter from './PasswordStrengthMeter';
 
 describe('checkPassword', () => {
-    test('blank password should not render progress bar', async () => {
+    test('blank password should not render progress bar', () => {
         const { queryByTestId } = render(<PasswordStrengthMeter password="" />);
         expect(queryByTestId('component-password-strength-bar')).toBeNull();
     });
 
-    test('simple password should show weak', async () => {
+    test('simple password should show weak', () => {
         const { getByTestId } = render(
             <PasswordStrengthMeter password="easypw" />
         );
