@@ -6,8 +6,7 @@
         "precommit-msg",
         "prettier-format",
         "lint",
-        "build:precommit",
-        "test"
+        "build:precommit"
     ],
     "scripts": {
         "start": "ionic serve",

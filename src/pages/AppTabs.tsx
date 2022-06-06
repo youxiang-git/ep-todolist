@@ -1,44 +1,36 @@
 import {
+    IonContent,
+    IonFabButton,
+    IonModal,
+    IonFab,
     IonIcon,
-    IonLabel,
-    IonRouterOutlet,
-    IonTabBar,
-    IonTabButton,
-    IonTabs,
 } from '@ionic/react';
-import React from 'react';
-import { home as homeIcon, settings as settingsIcon } from 'ionicons/icons';
-import { Route } from 'react-router-dom';
+import { addOutline } from 'ionicons/icons';
+import React, { useState } from 'react';
 import AppHeader from '../components/common/AppHeader';
-import MovieList from '../components/MovieList';
-import MovieForm from '../components/MovieForm';
+import TaskList from '../components/TaskList/TaskList';
+import AddTaskButton from '../components/common/AddTaskButton';
 
 const AppTabs: React.FC = () => {
+    const [open, setOpen] = useState(false);
+
     return (
-        <IonTabs>
-            <IonRouterOutlet>
-                <Route exact path="/movie/catalog">
-                    <AppHeader title="Catalog">
-                        <MovieList />
-                    </AppHeader>
-                </Route>
-                <Route exact path="/movie/entry">
-                    <AppHeader title="Catalog">
-                        <MovieForm />
-                    </AppHeader>
-                </Route>
-            </IonRouterOutlet>
-            <IonTabBar slot="bottom">
-                <IonTabButton tab="catalog" href="/movie/catalog">
-                    <IonIcon icon={homeIcon} />
-                    <IonLabel>Catalog</IonLabel>
-                </IonTabButton>
-                <IonTabButton tab="entry" href="/movie/entry">
-                    <IonIcon icon={settingsIcon} />
-                    <IonLabel>Entry</IonLabel>
-                </IonTabButton>
-            </IonTabBar>
-        </IonTabs>
+        <IonContent>
+            <AppHeader title="TASKS">
+                <TaskList />
+                <IonFab slot="fixed" horizontal="end" vertical="bottom">
+                    <IonFabButton onClick={() => setOpen(true)}>
+                        <IonIcon icon={addOutline}></IonIcon>
+                    </IonFabButton>
+                </IonFab>
+                <IonModal
+                    isOpen={open}
+                    breakpoints={[0, 0.2, 0.5, 1]}
+                    initialBreakpoint={0.5}
+                    backdropBreakpoint={0.2}
+                ></IonModal>
+            </AppHeader>
+        </IonContent>
     );
 };
 
