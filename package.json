@@ -7,7 +7,6 @@
         "prettier-format",
         "lint",
         "build:precommit",
-        "test"
     ],
     "scripts": {
         "start": "ionic serve",
@@ -16,7 +15,7 @@
         "ios": "ionic cap run ios -l --external",
         "test:watch": "react-scripts test --transformIgnorePatterns 'node_modules/(?!(@ionic/react|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/)'",
         "test": "react-scripts test --watchAll=false --transformIgnorePatterns 'node_modules/(?!(@ionic/react|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/)'",
-        "precommit-msg": "echo 'Pre-commit checks...' && exit 0",
+        "precommit-msg": "echo ' checks...' && exit 0",
         "prettier-format": "prettier --config .prettierrc \"**/*.{ts,tsx,json}\" --write",
         "lint": "eslint src --cache --ignore-pattern .gitignore",
         "build:precommit": "tsc",

@@ -51,7 +51,9 @@ const TaskSlidingItem: React.FC = () => {
                                 slot="end"
                                 size="medium"
                                 icon={trash}
-                                onClick={async () => await todoStore.delTodo(todo.id)}
+                                onClick={async () =>
+                                    await todoStore.delTodo(todo.id)
+                                }
                             ></IonIcon>
                         </IonItemOption>
                         <IonItemOption color="warning">
