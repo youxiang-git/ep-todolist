@@ -7,6 +7,7 @@
         "prettier-format",
         "lint",
         "build:precommit",
+        "test"
     ],
     "scripts": {
         "start": "ionic serve",
