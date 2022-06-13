@@ -5,3 +5,8 @@ ion-checkbox {
 ion-icon {
     font-size: 150%;
 }
+
+.completed-label {
+    text-decoration: line-through;
+    color: gray;
+}

@@ -1,36 +1,37 @@
-import React from 'react';
-import { IonContent, IonList } from '@ionic/react';
+import React, { useEffect } from 'react';
+import { IonContent, IonGrid, IonList } from '@ionic/react';
 import { observer } from 'mobx-react';
-import { useStores } from '../../stores/StoreProvider';
+import { useStores } from '../../stores/TodoStoreProvider';
 import TaskSlidingItem from './TaskSlidingItem';
+import styled from 'styled-components';
+
+const TaskListGrid = styled(IonGrid)`
+    --ion-grid-width-xs: 100%;
+    --ion-grid-width-sm: 640px;
+    --ion-grid-width-md: 640px;
+    --ion-grid-width-lg: 640px;
+    --ion-grid-width-xl: 640px;
+    min-width: 480px;
+`;
 
 const TaskList: React.FC = () => {
+    const { todoStore } = useStores();
+
+    useEffect(() => {
+        todoStore.getTodoTaskList();
+    }, []);
+
     return (
-        <IonContent fullscreen>
-            <IonList>
-                <TaskSlidingItem desc={'Do up wireframe'} />
-                <TaskSlidingItem desc={'Read up on MobX'} />
-                <TaskSlidingItem desc={'Incorrect Description'} />
-                <TaskSlidingItem desc={'Description 1'} />
-                <TaskSlidingItem desc={'Description 2'} />
-                <TaskSlidingItem desc={'Description 3'} />
-                <TaskSlidingItem desc={'Description 4'} />
-                <TaskSlidingItem desc={'Description 5'} />
-                <TaskSlidingItem desc={'Description 6'} />
-                <TaskSlidingItem desc={'Description 7'} />
-                <TaskSlidingItem desc={'Description 8'} />
-                <TaskSlidingItem desc={'Description 9'} />
-                <TaskSlidingItem desc={'Description 10'} />
-                <TaskSlidingItem desc={'Description 11'} />
-                <TaskSlidingItem desc={'Description 12'} />
-                <TaskSlidingItem
-                    desc={
-                        'Very Long Description AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
-                    }
-                />
-            </IonList>
+        <IonContent>
+            <TaskListGrid fixed>
+                <IonList inset>
+                    <TaskSlidingItemsObserver />
+                </IonList>
+            </TaskListGrid>
         </IonContent>
     );
 };
+
+const TaskSlidingItemsObserver = observer(TaskSlidingItem);
 
 export default TaskList;

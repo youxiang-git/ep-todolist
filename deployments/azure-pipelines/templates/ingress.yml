@@ -1,0 +1,41 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-ingress
+  namespace: __namespace__
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+    cert-manager.io/cluster-issuer: letsencrypt
+    nginx.org/websocket-services: '__imageRepository__'
+    kubernetes.io/ingress.class: 'nginx'
+    nginx.org/ssl-services: '__imageRepository__'
+    nginx.ingress.kubernetes.io/force-ssl-redirect: 'true'
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/upstream-hash-by: $remote_addr
+spec:
+  tls:
+    - hosts:
+        - __fqdn__
+        - __fqdn2__
+      secretName: tls-secret
+  rules:
+    - host: __fqdn__
+      http:
+        paths:
+          - backend:
+              service:
+                name: __imageRepository__
+                port:
+                  number: 80
+            path: /(.*)
+            pathType: Prefix
+    - host: __fqdn2__
+      http:
+        paths:
+          - backend:
+              service:
+                name: __imageRepository__
+                port:
+                  number: 80
+            path: /(.*)
+            pathType: Prefix

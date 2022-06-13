@@ -1,0 +1,169 @@
+pr: # exclude all pr trigger
+    branches:
+        exclude:
+            - '*'
+
+trigger: # branch to trigger pipeline
+    branches:
+        include:
+            - staging
+        exclude:
+            - release
+            - pre-release
+            - master
+    paths:
+        exclude:
+            - deployments/azure-pipelines/ci-pipeline.yml
+
+schedules:
+    - cron: '0 12 * * 0' # cron syntax defining a schedule
+      displayName: Weekly Sunday build
+      branches:
+          include:
+              - staging
+      always: false
+      # whether to always run the pipeline or only if there have been source code changes since the last successful scheduled run. The default is false.
+
+resources:
+    - repo: self
+
+variables:
+    # Project specific variables
+    - name: namespace
+      value: 'movie-pwa' # to edit
+    - name: fqdn
+      value: 'movie.app.dojo.tinnolab.org' # to edit
+    - name: fqdn2
+      value: 'movie2.app.dojo.tinnolab.org' # to edit
+    - name: imageRepository
+      value: 'movie-pwa-boiler' # to edit
+    - name: targetPort
+      value: 8080 # to edit
+    - name: pipelineEnvironmentName
+      value: 'onboard-staging' # to edit
+    - name: buildNamespace
+      value: 'onboard-staging-ns'
+    - name: vmImageName
+      value: 'ubuntu-20.04'
+    - name: azureContainerRegistry
+      value: 'dojocracr.azurecr.io'
+    - name: tag
+      value: '$(Build.BuildId)'
+    - name: azureResourceGroup
+      value: 'dojo-rg-aks-re1'
+    - name: kubernetesCluster
+      value: 'dojo-aks-akscluster-re1'
+    - name: azureServiceConnection
+      value: 'azureServiceConnection'
+
+stages:
+    - stage: Test
+      displayName: Run test suites
+      jobs:
+          - job: Test
+            displayName: Test
+            pool:
+                vmImage: $(vmImageName)
+            steps:
+                - task: npmAuthenticate@0
+                  inputs:
+                      workingFile: .npmrc
+                      customEndpoint: npmServiceConnection
+                - task: NodeTool@0
+                  inputs:
+                      versionSpec: '16.x'
+                - script: |
+                      echo 'Run tests'
+                      npm install
+                      npm test -- --coverage
+                  displayName: 'Run coverage tests'
+                - task: PublishCodeCoverageResults@1
+                  inputs:
+                      codeCoverageTool: 'cobertura'
+                      summaryFileLocation: '**/cobertura-coverage.xml'
+                - task: BuildQualityChecks@8
+                  inputs:
+                      checkCoverage: true
+                      coverageFailOption: 'fixed'
+                      coverageType: 'lines'
+                      coverageThreshold: '65'
+
+    - stage: Build
+      jobs:
+          - job: Build
+            pool:
+                vmImage: $(vmImageName)
+            steps:
+                - task: npmAuthenticate@0
+                  inputs:
+                      workingFile: .npmrc
+                      customEndpoint: npmServiceConnection
+                - task: Docker@1
+                  displayName: 'Docker: login ACR'
+                  inputs:
+                      command: login
+                      azureSubscriptionEndpoint: $(azureServiceConnection)
+                      azureContainerRegistry: $(azureContainerRegistry)
+                - task: Docker@2
+                  inputs:
+                      command: buildAndPush
+                      repository: $(imageRepository)
+                      tags: |
+                          $(tag)
+                          latest
+                # copy out template yaml for apply later
+                - task: CopyFiles@2
+                  displayName: Copy template files for AKS
+                  inputs:
+                      contents: $(build.sourcesDirectory)/deployments/azure-pipelines/templates/*.*
+                      targetFolder: $(build.artifactStagingDirectory)
+                - task: PublishBuildArtifacts@1
+                  inputs:
+                      pathtoPublish: $(build.artifactStagingDirectory)
+                      artifactName: drop
+
+    # Deploy
+    - stage: Deploy_to_AKS
+      jobs:
+          - deployment: Deploy_to_AKS
+            variables:
+                - name: kub-pod-instancecount
+                  value: 2
+                - name: node-env
+                  value: staging
+            pool:
+                vmImage: $(vmImageName)
+            environment: $(pipelineEnvironmentName).$(buildNamespace)
+            strategy:
+                runOnce:
+                    deploy:
+                        steps:
+                            - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+                              displayName: Replace tokens in **/*
+                              inputs:
+                                  rootDirectory: $(Pipeline.Workspace)/drop/deployments/azure-pipelines/templates
+                                  targetFiles: '*.yml'
+                                  keepToken: true
+                                  tokenPrefix: __
+                                  tokenSuffix: __
+                            - task: Kubernetes@1
+                              displayName: Create namespace first
+                              inputs:
+                                  connectionType: Azure Resource Manager
+                                  azureSubscriptionEndpoint: $(azureServiceConnection)
+                                  azureResourceGroup: $(azureResourceGroup)
+                                  kubernetesCluster: $(kubernetesCluster)
+                                  useClusterAdmin: true
+                                  command: apply
+                                  arguments: -f $(Pipeline.Workspace)/drop/deployments/azure-pipelines/templates/namespace.yml
+                            - task: Kubernetes@1
+                              displayName: kubectl apply using arguments
+                              inputs:
+                                  connectionType: Azure Resource Manager
+                                  namespace: $(namespace)
+                                  azureSubscriptionEndpoint: $(azureServiceConnection)
+                                  azureResourceGroup: $(azureResourceGroup)
+                                  kubernetesCluster: $(kubernetesCluster)
+                                  useClusterAdmin: true
+                                  command: apply
+                                  arguments: -f $(Pipeline.Workspace)/drop/deployments/azure-pipelines/templates/

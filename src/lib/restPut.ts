@@ -11,8 +11,9 @@ import { RestOptions } from './types';
 
 type PutRequest = {
     endpoint: string;
-    _id?: string;
-    data?: any;
+    _id: string;
+    description: string;
+    completed: boolean;
     credentials?: {
         accessToken: string;
         apiKey?: string;
@@ -21,10 +22,12 @@ type PutRequest = {
 
 const restPut = ({
     endpoint,
-    _id = '',
-    data = {},
+    _id,
+    description,
+    completed,
     credentials = undefined,
 }: PutRequest) => {
+    let data = { description, completed };
     let options: RestOptions = {};
     if (credentials) {
         options['headers'] = {

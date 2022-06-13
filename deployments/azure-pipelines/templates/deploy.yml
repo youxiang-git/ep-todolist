@@ -1,0 +1,40 @@
+# How to inject variables in Kubernetes manifest with Azure Pipelines?
+# https://medium.com/@katlimruiz/how-to-inject-variables-in-kubernetes-manifest-with-azure-pipelines-e598755be9b
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: __imageRepository__
+  namespace: __namespace__
+spec:
+  replicas: __kub-pod-instancecount__
+  selector:
+    matchLabels:
+      app: __imageRepository__
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5
+  template:
+    metadata:
+      namespace: __namespace__
+      annotations:
+        linkerd.io/inject: enabled
+      labels:
+        app: __imageRepository__
+    spec:
+      nodeSelector:
+        "beta.kubernetes.io/os": linux
+      containers:
+      - name: __imageRepository__
+        image: __azureContainerRegistry__/__imageRepository__:__tag__
+        ports:
+        env:
+        - name: PORT
+          value: "__targetPort__"
+        - name: NODE_ENV
+          value: __node-env__
+
+
+
+

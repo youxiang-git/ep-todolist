@@ -20,7 +20,7 @@ import {
     NavContext,
 } from '@ionic/react';
 import { exitOutline, homeOutline, keyOutline } from 'ionicons/icons';
-import { useStores } from '../../../stores/StoreProvider';
+import { useStores } from '../../../stores/TodoStoreProvider';
 
 const UserChangePasswordForm: React.FC = () => {
     const { userProfileStore } = useStores();

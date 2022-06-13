@@ -18,7 +18,7 @@ import {
     IonIcon,
     IonAlert,
 } from '@ionic/react';
-import { useStores } from '../stores/StoreProvider';
+import { useStores } from '../stores/TodoStoreProvider';
 import { AuthStatus } from '../auth/UserProfileStore';
 import { autorun } from 'mobx';
 

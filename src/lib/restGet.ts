@@ -28,6 +28,7 @@ const restGet = ({ endpoint, credentials }: GetRequest) => {
         };
     }
 
+    console.log('options are: ' + `${options}`);
     return axios.get(`${endpoint}`, options);
 };
 

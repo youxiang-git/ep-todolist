@@ -8,17 +8,16 @@ import {
     IonLabel,
     IonList,
     IonListHeader,
-    IonPopover,
     IonTitle,
     IonToolbar,
     NavContext,
     useIonPopover,
 } from '@ionic/react';
 import { personCircle, constructOutline, exitOutline } from 'ionicons/icons';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import UserProfileStore from '../../../auth/UserProfileStore';
-import { useStores } from '../../../stores/StoreProvider';
+import { useStores } from '../../../stores/TodoStoreProvider';
 
 const MenuIcon = styled(IonIcon)`
     margin-right: 10px;
@@ -41,7 +40,7 @@ const PopoverList: React.FC<{
             </IonListHeader>
             <IonItem button={true} detail={false} onClick={routeToPassword}>
                 <MenuIcon ios={constructOutline} md={constructOutline} />
-                <IonLabel> Manage Account </IonLabel>
+                <IonLabel> Manage Settings </IonLabel>
             </IonItem>
             <IonItem
                 button={true}

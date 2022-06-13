@@ -1,0 +1,17 @@
+version: "3.8"
+services:
+  web:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+      args:
+      # For authenticating to GitHub private registry
+      # RUN export NPM_TOKEN=<your GitHub PAT> in your terminal
+      - NPM_TOKEN=${NPM_TOKEN}
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=test
+    # Uncomment below to override the CMD in Dockerfile
+    # Infinite loop, to keep it alive, for debugging
+    # command: bash -c "while true; do echo 'sleeping...' && sleep 10; done"

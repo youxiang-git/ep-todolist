@@ -2,13 +2,14 @@ import React, { useContext, useEffect } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { IonApp, NavContext } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import StoreProvider, { useStores } from '../src/stores/StoreProvider';
+import TodoStoreProvider from './stores/TodoStoreProvider';
 import LoginPage from './pages/LoginPage';
 import AppTabs from './pages/AppTabs';
 import NotFoundPage from './pages/NotFound';
 import withCheckLogin from './auth/components';
 import LoadingComponent from './components/common/LoadingComponent';
 import UserChangePasswordForm from './components/common/UserChangePasswordForm';
+import { useStores } from './stores/TodoStoreProvider';
 
 const AppRouter: React.FC = () => {
     const { userProfileStore } = useStores();
@@ -31,7 +32,7 @@ const AppRouter: React.FC = () => {
                 <Route path="/login">
                     <LoginPage />
                 </Route>
-                <Route path="/movie">
+                <Route path="/app">
                     <AppTabsWithLogin
                         userProfileStore={userProfileStore}
                         routeToLogin={() => navigate('/login', 'back')}
@@ -46,7 +47,7 @@ const AppRouter: React.FC = () => {
                         LoadingComponent={LoadingComponent}
                     />
                 </Route>
-                <Redirect exact path="/" to="/movie/catalog" />
+                <Redirect exact path="/" to="/app/tasks" />
                 <Route>
                     <NotFoundPage />
                 </Route>
@@ -58,9 +59,9 @@ const AppRouter: React.FC = () => {
 const App: React.FC = () => {
     return (
         <IonApp>
-            <StoreProvider>
+            <TodoStoreProvider>
                 <AppRouter />
-            </StoreProvider>
+            </TodoStoreProvider>
         </IonApp>
     );
 };

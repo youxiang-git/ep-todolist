@@ -1,4 +1,4 @@
-import { MOVIE_ENDPOINT } from '../settings';
+import { TODO_ENDPOINT } from '../settings';
 import { Movie } from './AppStore';
 import restGet from '../lib/restGet';
 import restPost from '../lib/restPost';
@@ -22,7 +22,7 @@ class AppService {
         return new Promise(async (resolve, reject) => {
             try {
                 const response = await restGet({
-                    endpoint: MOVIE_ENDPOINT,
+                    endpoint: TODO_ENDPOINT,
                 });
                 const movieList: Movie[] | null =
                     'data' in response ? response.data : null;
@@ -39,7 +39,7 @@ class AppService {
         return new Promise(async (resolve, reject) => {
             try {
                 const response = await restPost({
-                    endpoint: MOVIE_ENDPOINT,
+                    endpoint: TODO_ENDPOINT,
                     data: movie,
                 });
                 const result = 'data' in response ? response.data : null;
