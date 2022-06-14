@@ -76,7 +76,7 @@ const TaskForm: React.FC<{ dismiss: any }> = ({ dismiss }) => {
     };
 
     return (
-        <IonPage data-testid='bottom-sheet-modal'>
+        <IonPage data-testid="bottom-sheet-modal">
             <IonHeader>
                 <IonTitle>
                     <h1>
