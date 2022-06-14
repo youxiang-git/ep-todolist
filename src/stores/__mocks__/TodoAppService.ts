@@ -1,6 +1,6 @@
 import { Todo } from '../TodoAppStore';
 
-class TodoAppStore {
+class TodoAppService {
     getTodoTaskListAsync = (): Promise<Todo[]> => {
         return new Promise((resolve) => {
             resolve([
@@ -52,4 +52,20 @@ class TodoAppStore {
             });
         });
     }
+
+    editTaskDescriptionAsync(
+        id: string,
+        description: string,
+        completed: boolean
+    ): Promise<any> {
+        return new Promise(async (resolve) => {
+            resolve({
+                id: id,
+                description: description,
+                completed: completed,
+            });
+        });
+    }
 }
+
+export default TodoAppService;

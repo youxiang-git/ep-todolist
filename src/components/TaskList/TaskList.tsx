@@ -22,7 +22,7 @@ const TaskList: React.FC = () => {
     }, []);
 
     return (
-        <IonContent>
+        <IonContent data-testid="task-list">
             <TaskListGrid fixed>
                 <IonList inset>
                     <TaskSlidingItemsObserver />

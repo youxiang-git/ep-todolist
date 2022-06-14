@@ -1,13 +1,13 @@
 import AppHeader from './AppHeader';
 import { render } from '@testing-library/react';
-import StoreProvider from '../../../stores/StoreProvider';
+import TodoStoreProvider from '../../../stores/TodoStoreProvider';
 import {
     ionFireEvent as fireEvent,
     waitForIonicReact,
 } from '@ionic/react-test-utils';
 
 const renderWithStores = (children: JSX.Element) => {
-    return render(<StoreProvider>{children}</StoreProvider>);
+    return render(<TodoStoreProvider>{children}</TodoStoreProvider>);
 };
 const setup = async ({ label, title }: { label: string; title: string }) => {
     const utils = renderWithStores(<AppHeader title={title} />);
@@ -38,12 +38,12 @@ describe('<AppHeader />', () => {
     it('should render child correctly', () => {
         const Child: React.FC = () => <div> test child </div>;
         const { getByText } = render(
-            <StoreProvider>
+            <TodoStoreProvider>
                 <AppHeader title="title one">
                     {' '}
                     <Child />{' '}
                 </AppHeader>
-            </StoreProvider>
+            </TodoStoreProvider>
         );
         expect(getByText('test child')).toBeTruthy();
     });

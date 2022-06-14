@@ -5,6 +5,7 @@ import {
     IonTitle,
     IonTextarea,
     IonButton,
+    IonPage,
 } from '@ionic/react';
 import styled from 'styled-components';
 import { observer } from 'mobx-react-lite';
@@ -75,7 +76,7 @@ const TaskForm: React.FC<{ dismiss: any }> = ({ dismiss }) => {
     };
 
     return (
-        <>
+        <IonPage data-testid='bottom-sheet-modal'>
             <IonHeader>
                 <IonTitle>
                     <h1>
@@ -109,7 +110,7 @@ const TaskForm: React.FC<{ dismiss: any }> = ({ dismiss }) => {
                     {uiState.isEdit ? 'Edit' : 'Add'}
                 </TaskFormAddButton>
             </IonContent>
-        </>
+        </IonPage>
     );
 };
 

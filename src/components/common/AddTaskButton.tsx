@@ -16,6 +16,7 @@ const AddTaskButton: React.FC = () => {
             <IonFabButton
                 onClick={() => uiState.setModalOpen(true)}
                 size="small"
+                data-testid={'add-fab-button'}
             >
                 <IonIcon icon={addOutline}></IonIcon>
             </IonFabButton>

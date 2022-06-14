@@ -1,13 +1,13 @@
 import { render, waitFor } from '@testing-library/react';
 import UserChangePasswordForm from './UserChangePasswordForm';
-import StoreProvider from '../../../stores/StoreProvider';
+import TodoStoreProvider from '../../../stores/TodoStoreProvider';
 import {
     ionFireEvent as fireEvent,
     waitForIonicReact,
 } from '@ionic/react-test-utils';
 
 const renderWithStores = (children: JSX.Element) => {
-    return render(<StoreProvider>{children}</StoreProvider>);
+    return render(<TodoStoreProvider>{children}</TodoStoreProvider>);
 };
 const setup = async (label: string) => {
     const utils = renderWithStores(<UserChangePasswordForm />);

@@ -120,7 +120,7 @@ class TodoAppService {
                 });
                 const result = 'data' in response ? response.data : null;
                 if (!result) throw Error('Missing todo-list data!');
-                console.log(result);
+                console.log('editTaskDescriptionAsync result: ' + result);
                 resolve(result);
             } catch (error) {
                 if (error instanceof Error) {
