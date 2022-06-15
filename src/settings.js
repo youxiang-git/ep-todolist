@@ -7,4 +7,7 @@ module.exports = {
         MIN_STRENGTH: 2,
         MIN_LENGTH: 6,
     },
+
+    FIREBASE_API_KEY: 'AIzaSyA5gMJuDq2Se2USbT6VIgu6hNMNR7-HFG0',
+    FIREBASE_AUTH_DOMAIN: 'tolearn-development.firebaseapp.com',
 };

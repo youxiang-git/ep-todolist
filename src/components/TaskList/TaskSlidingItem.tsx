@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
     IonItemSliding,
     IonLabel,
@@ -7,19 +7,19 @@ import {
     IonIcon,
     IonCheckbox,
     IonItem,
+    IonItemGroup,
 } from '@ionic/react';
-import { createOutline, trash } from 'ionicons/icons';
+import { createOutline, key, trash } from 'ionicons/icons';
 import './TaskSlidingItem.module.css';
 import { useStores } from '../../stores/TodoStoreProvider';
 
 const TaskSlidingItem: React.FC = () => {
     const { todoStore, uiState } = useStores();
-    const toClose = useRef<HTMLIonItemSlidingElement>(null);
 
     return (
-        <>
+        <IonItemGroup>
             {todoStore.todoList.map((todo: any) => (
-                <IonItemSliding key={todo.id} ref={toClose}>
+                <IonItemSliding id={todo.id} key={todo.id}>
                     <IonItem>
                         <IonCheckbox
                             checked-slot="start"
@@ -48,7 +48,7 @@ const TaskSlidingItem: React.FC = () => {
                     <IonItemOptions side="end">
                         <IonItemOption color="danger">
                             <IonIcon
-                                slot="end"
+                                slot="icon-only"
                                 size="medium"
                                 icon={trash}
                                 onClick={async () =>
@@ -58,7 +58,8 @@ const TaskSlidingItem: React.FC = () => {
                         </IonItemOption>
                         <IonItemOption color="warning">
                             <IonIcon
-                                slot="end"
+                                slot="icon-only"
+                                size="medium"
                                 onClick={() => {
                                     uiState.setModalOpen(true);
                                     uiState.setIsEdit(true);
@@ -67,15 +68,17 @@ const TaskSlidingItem: React.FC = () => {
                                         todo.id
                                     );
                                     uiState.storeUneditedTodo(todo.description);
-                                    uiState.setToClose(toClose.current);
+                                    uiState.setToClose(
+                                        document.getElementById(todo.id)
+                                    );
                                 }}
                                 icon={createOutline}
-                            />
+                            ></IonIcon>
                         </IonItemOption>
                     </IonItemOptions>
                 </IonItemSliding>
             ))}
-        </>
+        </IonItemGroup>
     );
 };
 

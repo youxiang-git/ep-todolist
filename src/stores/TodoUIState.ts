@@ -42,6 +42,7 @@ class TodoUiState {
 
     setToClose = (item: any) => {
         this.toClose = item;
+        console.log('toClose is: ' + this.toClose);
     };
 
     storeUneditedTodo = (desc: string) => {

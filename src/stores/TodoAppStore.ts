@@ -36,6 +36,7 @@ class TodoAppStore {
                 await this.todoAppService.getTodoTaskListAsync();
 
             runInAction(() => {
+                //console.log(tempTodoList);
                 this.todoList = tempTodoList;
             });
         } catch (error) {
